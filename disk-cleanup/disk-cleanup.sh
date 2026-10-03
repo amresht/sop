@@ -135,17 +135,26 @@ log "INFO ${files_to_delete[@]}"
 
 ####################################################################################
 
+if [[ "$MODE" == "DRY_RUN" ]];then 
+	log "========================================================"
+	log "INFO: DRY_RUN Mode enabled, no files will be deleted."
+	log "INFO: EXECTION SUMMARY : SUCCESS."
+	log "========================================================"
+else
+	log "INFO: Executing deletion...."
+	if find "$TARGET_DIR -type f -name *.$EXTENSION -mtime +$DAYS" -delete; then 
+		log "========================================================"
+		log "INFO: Successfully deleted $number_files files."
+		log "INFO: EXECTION SUMMARY : SUCCESS."
+		log "========================================================"
+	else
+		log "========================================================"
+		log "ERROR: Could not delete $number_files files."
+		log "ERROR: EXECTION SUMMARY : FAILURE."
+		log "========================================================"
+		exit 1
+	fi
+fi
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+log "=========================================================="
+log "INFO: =========== Disk Clean up script Finished =========== "
